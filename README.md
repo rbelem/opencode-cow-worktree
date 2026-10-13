@@ -7,7 +7,7 @@ milliseconds at almost no disk cost. Where a `git worktree` carries tracked
 files only, a **Deep clone** here carries everything, so the agent can run the
 test suite immediately.
 
-Current release: [v0.5.0](https://github.com/rbelem/opencode-cow-worktree/releases/tag/v0.5.0),
+Current release: [v0.6.0](https://github.com/rbelem/opencode-cow-worktree/releases/tag/v0.6.0),
 also on [npm](https://www.npmjs.com/package/opencode-cow-worktree). Install
 from a local checkout (form A below) or from the npm registry.
 
@@ -62,8 +62,9 @@ agent-visible tools (`options.codemode` is `false`). The built-ins live in
 the `opencode.*` namespace and run only inside `execute`. The names do not
 collide, and neither family replaces the other.
 
-Requires opencode2 >= 2.0.27 (built-in worktree tools).
-<!-- compat-verify: replace with the exact host version the e2e suite last passed against -->
+Requires opencode2 >= 2.0.27 (built-in worktree tools). Verified against
+2.7.50: the e2e suite passes 112 checks and the native-path matrix
+(scripts/e2e/native-matrix.ts) passes 18 checks on that host.
 
 ## Install
 

@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.6.0
+
+Compatibility with opencode2 v2.0.27's built-in worktree tools (PR
+anomalyco/opencode#53981), which moved `worktree_create`, `worktree_list`,
+and `worktree_remove` into the host.
+
+- **Native creates produce cow clones.** The built-in create carries no
+  strategy field and uses the location's default strategy, which this plugin
+  registers. Verified on 2.7.50: strategy-less creates report `cow` in the
+  inventory and materialize Deep clones, including when the create is the
+  server's first worktree call — no lazy-activation gap. The new native-path
+  matrix (`scripts/e2e/native-matrix.ts`, 18 checks) pins the contract.
+- **`remove_worktree` now requires edit approval** (`permission: "edit"`,
+  the host's removal convention since v2.0.27). With `edit: deny` the tool
+  is hidden, same as the built-in remover.
+- The strategy's force-less refusal reason carries through the native remove
+  path verbatim, and `force: true` discards ignored files on both surfaces.
+  Cow clones hold env files and local state that exist nowhere else, so
+  treat force on a cow lane as destructive.
+- Suite: 348 tests; the e2e harness (112 checks) and the native-path matrix
+  (18 checks) pass against opencode2 2.7.50.
+
 ## 0.5.0
 
 The plugin is renamed: `opencode2-cow-worktree` is now `opencode-cow-worktree`.
