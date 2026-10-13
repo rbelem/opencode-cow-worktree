@@ -21,6 +21,50 @@ from a local checkout (form A below) or from the npm registry.
   than degrading to a full copy. Configure it as shown below; the default
   location opencode2 picks is usually on a different filesystem.
 
+## Built-in worktree tools
+
+opencode2 v2.0.27 (2026-10-12) moved worktree tools into core, via upstream
+PR anomalyco/opencode#53981: `opencode.worktree_create`,
+`opencode.worktree_list`, and `opencode.worktree_remove`, callable from
+Code Mode's `execute`. With this plugin active, the built-ins are cow-aware
+in two ways.
+
+- `opencode.worktree_create` takes a name only and carries no strategy
+  field. It rides the location's default strategy, which this plugin sets
+  to `cow`, so a built-in create materializes a Deep clone the same way a
+  TUI or API create does.
+- `opencode.worktree_remove` removes any project worktree, cow ones
+  included. It drives the same DELETE route as the API, so a removal
+  without force is still refused for a dirty or unlanded tree.
+
+The plugin's tools remain the guarded surfaces.
+
+**`spawn_workspace`** is the guarded front door. One call creates the
+worktree and starts a session in it. A name that already belongs to a cow
+worktree attaches instead of cloning. A foreign worktree at that path is
+refused. A live session holding the directory blocks attach, and the error
+names the occupying session with the recovery paths. The result reports the
+mechanism, so an agent knows whether it holds the ignored files.
+
+**`remove_worktree`** is the guarded remover. Before it refuses unlanded
+work it fetches `origin` and re-judges, so a lane whose pull request
+already merged is not refused on stale refs. It removes only worktrees the
+inventory knows as cow, and each refusal states what to do next.
+
+**Force discards ignored files irrecoverably.** A cow clone carries the
+whole source directory, including what git does not track: env files, local
+databases, scratch state that exists nowhere else. `force: true` on either
+removal surface, the built-in tool or the plugin's, deletes them. There is
+no recovery.
+
+The two tool families coexist. The plugin's three tools register as plain
+agent-visible tools (`options.codemode` is `false`). The built-ins live in
+the `opencode.*` namespace and run only inside `execute`. The names do not
+collide, and neither family replaces the other.
+
+Requires opencode2 >= 2.0.27 (built-in worktree tools).
+<!-- compat-verify: replace with the exact host version the e2e suite last passed against -->
+
 ## Install
 
 **What installing changes.** Registering the plugin makes `cow` opencode2's

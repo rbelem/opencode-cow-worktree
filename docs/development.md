@@ -109,6 +109,15 @@ list, refresh, the strategy recorded at removal time, and the project setup
 script. `ctx` meets the seams in exactly one place (`liveDeps` in
 `src/plugin.ts`); the tool layer composes the strategy and never the reverse.
 
+## Upstream watch
+
+opencode2 is consolidating worktree tooling into core. v2.0.27
+(2026-10-12) shipped the built-in `opencode.worktree_*` Code Mode tools,
+and upstream PR anomalyco/opencode#53981 removed the internal plugin copies
+once they shipped. Watch the two surfaces this plugin depends on: the tool
+registration and override semantics, and the `ctx.worktree.transform`
+strategy-registration seam, which is the plugin's actual mechanism.
+
 ## Parallel lanes
 
 This repository is developed with parallel CoW lane clones: `bun
