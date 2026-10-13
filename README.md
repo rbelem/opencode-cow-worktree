@@ -7,7 +7,7 @@ milliseconds at almost no disk cost. Where a `git worktree` carries tracked
 files only, a **Deep clone** here carries everything, so the agent can run the
 test suite immediately.
 
-Current release: [v0.1.0](https://github.com/rbelem/opencode-cow-worktree/releases/tag/v0.1.0),
+Current release: [v0.5.0](https://github.com/rbelem/opencode-cow-worktree/releases/tag/v0.5.0),
 also on [npm](https://www.npmjs.com/package/opencode-cow-worktree). Install
 from a local checkout (form A below) or from the npm registry.
 

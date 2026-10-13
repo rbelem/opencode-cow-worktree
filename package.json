@@ -1,6 +1,6 @@
 {
   "name": "opencode-cow-worktree",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Copy-on-write worktree strategy for opencode2: a Deep clone of the whole working directory, ignored files included, so parallel agents start ready to run",
   "type": "module",
   "exports": {

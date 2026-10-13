@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.5.0
 
 The plugin is renamed: `opencode2-cow-worktree` is now `opencode-cow-worktree`.
 
@@ -17,6 +17,8 @@ The plugin is renamed: `opencode2-cow-worktree` is now `opencode-cow-worktree`.
   polls `GET /api/plugin` (`/api/health` lost its handler on the 20260915
   nightly), activation is detected by polling the plugin list, and worktree
   endpoints carry `projectID`.
+- Suite: 348 tests; the dogfood install check passes 12/12 against the
+  20260917 nightly.
 
 ## 0.4.1
 
