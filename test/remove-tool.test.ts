@@ -502,7 +502,7 @@ const fakeLocation = {
 test("plugin setup registers remove_worktree on the native tool list with its output schema", async () => {
   const registered: Array<{
     name: string;
-    options?: { codemode?: boolean };
+    options?: { codemode?: boolean; permission?: string };
     input?: unknown;
     output?: unknown;
   }> = [];
@@ -532,6 +532,10 @@ test("plugin setup registers remove_worktree on the native tool list with its ou
   expect(tool).toBeDefined();
   // Callable by name, like spawn_workspace and list_worktrees.
   expect(tool!.options?.codemode).toBe(false);
+  // Removal is an edit-approved mutation on the host since v2.0.27
+  // (PR anomalyco/opencode#53981); this pins the registration shape, not the
+  // host's enforcement.
+  expect(tool!.options?.permission).toBe("edit");
   const output = tool!.output as {
     properties: Record<string, unknown>;
     required: readonly string[];

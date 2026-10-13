@@ -381,8 +381,10 @@ export default {
         input: removeWorktreeInput,
         output: removeWorktreeOutput,
         // Same reason as spawn_workspace above: callable by name, not routed
-        // through CodeMode.
-        options: { codemode: false },
+        // through CodeMode. permission follows the host convention since
+        // v2.0.27 (PR anomalyco/opencode#53981): removal is an edit-approved
+        // mutation, so `edit: deny` hides the tool.
+        options: { codemode: false, permission: "edit" },
         execute: async (input: RemoveWorktreeInput) => {
           const result = await removeWorktree(input, {
             listWorktrees: () => ctx.worktree.list({ projectID: ctx.location.project.id }),
