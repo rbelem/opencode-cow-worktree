@@ -31,7 +31,7 @@ that deliberately do *not* travel.
 ## Merge procedure (recommended)
 
 ```bash
-cd /home/rodrigo/Workspace/github.com/rbelem/opencode2-cow-worktree
+cd /home/rodrigo/Workspace/github.com/rbelem/opencode-cow-worktree
 # 0. Preconditions: main clean; per-lane `--no-optional-locks status
 #    --porcelain` empty; both fixer lanes terminal.
 git remote add lane-b /home/rodrigo/Workspace/cow-lane-B   # namespaced refs

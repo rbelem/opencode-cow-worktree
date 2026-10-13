@@ -285,7 +285,7 @@ test("the exclude entry is idempotent: two writes, one entry", async () => {
   const exclude = await readFile(join(dir, ".git", "info", "exclude"), "utf8");
   const entries = exclude.split("\n").filter((line) => line.trim() === MARKER_NAME);
   expect(entries).toEqual([MARKER_NAME]);
-  expect(exclude).toContain("# opencode2-cow-worktree occupancy marker");
+  expect(exclude).toContain("# opencode-cow-worktree occupancy marker");
 });
 
 test("the exclude entry is appended to an existing exclude file", async () => {

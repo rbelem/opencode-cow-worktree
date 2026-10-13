@@ -279,7 +279,7 @@ async function directoryPresent(directory: string): Promise<boolean> {
  * name the built-in git strategy.
  */
 export default {
-  id: "opencode2-cow-worktree",
+  id: "opencode-cow-worktree",
   async setup(ctx: Context): Promise<void> {
     // Every plugin option is validated exactly once, here, before anything is
     // registered: a misconfiguration must fail the plugin load, not surface

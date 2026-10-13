@@ -126,7 +126,7 @@ export async function driveModel(
     socket.addEventListener("open", () => {
       clearTimeout(timer);
       call("simulation.handshake", {
-        client: { name: "opencode2-cow-worktree-e2e", version: "0.0.1" },
+        client: { name: "opencode-cow-worktree-e2e", version: "0.0.1" },
         expectedRole: "backend",
         offeredVersions: [1],
         requiredCapabilities: [],

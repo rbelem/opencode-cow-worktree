@@ -35,7 +35,7 @@ export type CowCloneAttempt = (
  */
 const cloneWithReflink: CowCloneAttempt = reflinkFile;
 
-const PROBE_PREFIX = ".opencode2-cow-capability-";
+const PROBE_PREFIX = ".opencode-cow-capability-";
 
 /** Failures that definitively mean the clone operation is not supported. */
 const NOT_SUPPORTED_CODES = new Set([
@@ -100,7 +100,7 @@ async function attemptClone(
   const scratch = await mkdtemp(join(directory, PROBE_PREFIX));
   try {
     const source = join(scratch, "source");
-    await writeFile(source, "opencode2-cow-worktree");
+    await writeFile(source, "opencode-cow-worktree");
     await attempt(source, join(scratch, "clone"));
     return { status: "supported" };
   } catch (error) {

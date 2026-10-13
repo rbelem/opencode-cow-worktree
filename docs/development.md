@@ -66,7 +66,7 @@ materialized, plus the agent-facing tools.
 ```ts
 // src/plugin.ts (condensed)
 export default {
-  id: "opencode2-cow-worktree",
+  id: "opencode-cow-worktree",
   async setup(ctx: Context): Promise<void> {
     // Every option is validated here, once: a bad value fails the plugin load.
     const hooks = postCreateHooks(ctx.options);

@@ -205,7 +205,7 @@ test.skipIf(asRoot)("a failing scratch cleanup still yields supported", async ()
     // the dot-prefixed scratch survived the probe.
     const leftovers = await readdir(dir);
     expect(leftovers).toHaveLength(1);
-    expect(leftovers[0]).toMatch(/^\.opencode2-cow-capability-/);
+    expect(leftovers[0]).toMatch(/^\.opencode-cow-capability-/);
   } finally {
     await chmod(dir, 0o700);
     await rm(dir, { recursive: true, force: true });

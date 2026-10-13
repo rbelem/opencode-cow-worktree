@@ -199,7 +199,7 @@ function humanAge(ms: number): string {
 // other than "not there" propagate — an unreadable marker is not evidence of a
 // free worktree — and write failures propagate to the caller's warning path.
 
-const EXCLUDE_APPEND = `\n# opencode2-cow-worktree occupancy marker\n${MARKER_NAME}\n`;
+const EXCLUDE_APPEND = `\n# opencode-cow-worktree occupancy marker\n${MARKER_NAME}\n`;
 
 /**
  * The raw marker file's content, or `undefined` when there is none. Any other

@@ -25,7 +25,7 @@ helper on the v2 tip now sends `{ projectID, from, branch }` and no strategy
 literal, and `Worktree.CreateInput` no longer declares a `strategy` field at
 all — core resolves the create through the selected strategy
 (`getStrategy(settings.selected, …)` in `packages/core/src/worktree.ts`).
-Filed as rbelem/opencode2-cow-worktree#14; closed against this evidence.
+Filed as rbelem/opencode-cow-worktree#14; closed against this evidence.
 
 ## 2. `Worktree.OperationError` `instanceof` broken for installed plugins; `forceRequired: null`
 
@@ -157,7 +157,7 @@ error fires before the recorded strategy is consulted and `force` never
 reaches a path that could ignore it. Measured against the pinned
 `0.0.0-next-20260912.3` and re-verified against the v2 tip
 (`0.0.0-next-20260917`, where the op also takes `projectID`); filed as
-rbelem/opencode2-cow-worktree#12 with the full repro.
+rbelem/opencode-cow-worktree#12 with the full repro.
 
 **Workaround status.** Plugin-side half shipped in v0.1.0: `cow.remove`
 resolves a vanished directory as an already-complete removal, covering the

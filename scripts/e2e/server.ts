@@ -19,7 +19,7 @@ export interface Server {
 }
 
 const READY_TIMEOUT_MS = 30_000;
-const PLUGIN_ID = "opencode2-cow-worktree";
+const PLUGIN_ID = "opencode-cow-worktree";
 
 export async function startServer(
   config: ConfigRoot,

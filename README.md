@@ -1,4 +1,4 @@
-# opencode2-cow-worktree
+# opencode-cow-worktree
 
 A copy-on-write worktree strategy for [opencode2](https://opencode.ai). Each
 agent gets a complete, independent copy of the project: tracked files,
@@ -7,8 +7,8 @@ milliseconds at almost no disk cost. Where a `git worktree` carries tracked
 files only, a **Deep clone** here carries everything, so the agent can run the
 test suite immediately.
 
-Current release: [v0.1.0](https://github.com/rbelem/opencode2-cow-worktree/releases/tag/v0.1.0),
-also on [npm](https://www.npmjs.com/package/opencode2-cow-worktree). Install
+Current release: [v0.1.0](https://github.com/rbelem/opencode-cow-worktree/releases/tag/v0.1.0),
+also on [npm](https://www.npmjs.com/package/opencode-cow-worktree). Install
 from a local checkout (form A below) or from the npm registry.
 
 ## Requirements
@@ -30,7 +30,7 @@ tmpfs), worktree creation fails loudly until you remove the plugin. Install
 it only on machines whose projects meet the Requirements above. opencode2
 Desktop cannot select plugin strategies today, so it ignores the plugin
 entirely
-([`docs/research/desktop-strategy-hardcode.md`](https://github.com/rbelem/opencode2-cow-worktree/blob/main/docs/research/desktop-strategy-hardcode.md)).
+([`docs/research/desktop-strategy-hardcode.md`](https://github.com/rbelem/opencode-cow-worktree/blob/main/docs/research/desktop-strategy-hardcode.md)).
 
 ### The short version
 
@@ -39,14 +39,14 @@ opencode2 installs the plugin itself from npm. Add the package to the
 
 ```json
 {
-  "plugins": [{ "package": "opencode2-cow-worktree@latest" }]
+  "plugins": [{ "package": "opencode-cow-worktree@latest" }]
 }
 ```
 
 Or let the CLI write that entry:
 
 ```sh
-opencode2 plugin add opencode2-cow-worktree
+opencode2 plugin add opencode-cow-worktree
 ```
 
 On the next startup opencode2 downloads the package into its own cache
@@ -67,7 +67,7 @@ Options ride in the same entry:
 {
   "plugins": [
     {
-      "package": "opencode2-cow-worktree@latest",
+      "package": "opencode-cow-worktree@latest",
       "options": {
         "hooks": { "postCreate": ["corepack use pnpm@latest"] }
       }
@@ -87,7 +87,7 @@ working tree, tracked edits are live with no build step:
 
 ```json
 {
-  "plugins": [{ "package": "/path/to/opencode2-cow-worktree" }]
+  "plugins": [{ "package": "/path/to/opencode-cow-worktree" }]
 }
 ```
 
@@ -99,7 +99,7 @@ Confirm the plugin loaded:
 opencode2 plugin list
 ```
 
-`opencode2-cow-worktree` should appear with state `active`.
+`opencode-cow-worktree` should appear with state `active`.
 
 For a deeper check — that a worktree create with no `strategy` field
 materializes a Deep clone, proving `cow` became the default — the repository
@@ -166,7 +166,7 @@ whatever started it (HTTP API, TUI, `spawn_workspace`):
 {
   "plugins": [
     {
-      "package": "/path/to/opencode2-cow-worktree",
+      "package": "/path/to/opencode-cow-worktree",
       "options": {
         "hooks": {
           "postCreate": [
@@ -247,7 +247,7 @@ regardless of `fallback`. Only `spawn_workspace` consults the policy.
   "git"` option produces a regular git worktree for tool calls.
 - **The plugin is stuck on an old version** — opencode2 caches the package
   under `~/.cache/opencode/node_modules/`. Remove the plugin's cache
-  directory and restart: `rm -rf ~/.cache/opencode/node_modules/opencode2-cow-worktree`.
+  directory and restart: `rm -rf ~/.cache/opencode/node_modules/opencode-cow-worktree`.
 - **Plugin looks absent right after boot** — resolve
   `POST /api/plugin/await-activation` before reading `GET /api/plugin`.
 - **`Plugin failed to load`** — the plugin is declared twice (discovered
@@ -261,14 +261,14 @@ regardless of `fallback`. Only `spawn_workspace` consults the policy.
 The unit suite (`bun test`), typecheck (`bun run typecheck`), coverage gate
 (`bun run test:coverage`), and the e2e harness (`bun scripts/e2e/harness.ts`)
 are described in
-[`docs/development.md`](https://github.com/rbelem/opencode2-cow-worktree/blob/main/docs/development.md),
+[`docs/development.md`](https://github.com/rbelem/opencode-cow-worktree/blob/main/docs/development.md),
 along with the recorded live runs and the parallel-lane tooling this
 repository is developed with.
 
 Terms the output uses: a **Workspace** is a logical handle, a **Location** is
 where a session runs, and a **Worktree** is a directory materialized by a
 **Strategy** — more in
-[CONTEXT.md](https://github.com/rbelem/opencode2-cow-worktree/blob/main/CONTEXT.md).
+[CONTEXT.md](https://github.com/rbelem/opencode-cow-worktree/blob/main/CONTEXT.md).
 
 ## License
 

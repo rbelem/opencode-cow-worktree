@@ -90,7 +90,7 @@ async function main(): Promise<number> {
 
   let code = 1;
   try {
-    say("== opencode2-cow-worktree · macOS APFS clone verification ==");
+    say("== opencode-cow-worktree · macOS APFS clone verification ==");
     say(`platform=${process.platform} arch=${process.arch} bun=${Bun.version}`);
     say(`report: ${options.reportPath}`);
     code = await verify(options, say);

@@ -73,7 +73,7 @@ function render(date: string, input: RunLogInput): string {
   const pluginLines = input.server
     .output()
     .split("\n")
-    .filter((line) => /loading plugin|opencode2-cow-worktree|worktree/i.test(line))
+    .filter((line) => /loading plugin|opencode-cow-worktree|worktree/i.test(line))
     .slice(-8);
   return [
     `# e2e dogfood run — ${date}`,

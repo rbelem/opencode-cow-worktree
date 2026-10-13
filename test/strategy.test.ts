@@ -102,7 +102,7 @@ test("plugin setup registers exactly one strategy, with id cow", async () => {
   const added: Added[] = [];
   await plugin.setup(fakeContext(added));
 
-  expect(plugin.id).toBe("opencode2-cow-worktree");
+  expect(plugin.id).toBe("opencode-cow-worktree");
   expect(added).toHaveLength(1);
   expect(added[0]?.id).toBe("cow");
   // The factory instance the setup builds, not the module-level hookless

@@ -24,7 +24,7 @@ import { join } from "node:path";
 import { execFileSync } from "node:child_process";
 import { installPlugin, declarePlugin } from "./e2e/lib";
 
-const SEAM = join(process.env.HOME!, ".config", "opencode", "plugins", "opencode2-cow-worktree");
+const SEAM = join(process.env.HOME!, ".config", "opencode", "plugins", "opencode-cow-worktree");
 const PORT = 46180;
 const PASSWORD = "dogfood-check";
 const COW_ROOT = "/tmp/opencode";
@@ -68,6 +68,7 @@ async function main(): Promise<number> {
   const env = {
     ...process.env,
     HOME: home,
+    OPENCODE_TEST_HOME: home,
     OPENCODE_CONFIG_DIR: config,
     XDG_CONFIG_HOME: join(root, "config"),
     XDG_DATA_HOME: join(root, "data"),
@@ -120,26 +121,40 @@ async function main(): Promise<number> {
     const deadline = Date.now() + 30_000;
     let healthy = false;
     while (Date.now() < deadline && !healthy) {
-      healthy = (await call("GET", "/api/health").catch(() => ({ status: 0, body: undefined, text: "" }))).status === 200;
+      // /api/health lost its handler on the 20260915 nightly (404 with auth).
+      // Readiness polls /api/plugin instead, which pinned and nightly builds
+      // serve — mirrors waitForHealth in scripts/e2e/server.ts.
+      healthy = (await call("GET", "/api/plugin").catch(() => ({ status: 0, body: undefined, text: "" }))).status === 200;
       if (!healthy) await Bun.sleep(150);
     }
     check("server became healthy", healthy, "timeout");
     if (!healthy) return failures;
 
-    // GET /api/plugin does not await activation; 204 from this call is success.
+    // GET /api/plugin does not await activation. The await-activation route
+    // answers 204 on pinned builds and 404 on the 20260917 nightly, so the
+    // plugin.list query below decides activation; this call only nudges it.
     const activation = await call("POST", "/api/plugin/await-activation");
     check(
-      "plugin activation settled (204)",
-      activation.status === 204,
+      "plugin activation settled (204, or 404 on nightlies without the route)",
+      activation.status === 204 || activation.status === 404,
       `${activation.status} ${activation.text.slice(0, 200)}`,
     );
 
-    const listed = await call("GET", "/api/plugin");
-    // `Location.response` wraps the payload: { location, data } (schema/location.ts).
-    const plugins = Array.isArray((listed.body as { data?: unknown } | undefined)?.data)
-      ? ((listed.body as { data: Array<{ id?: string; source?: { type?: string }; state?: { status?: string; error?: string } }> }).data)
-      : [];
-    const mine = plugins.find((p) => (p.id ?? "").includes("cow-worktree") || JSON.stringify(p.source ?? {}).includes("cow-worktree"));
+    // Activation on the 20260917 nightly is lazy (the first plugin query
+    // triggers the load) and await-activation is gone, so poll the list the
+    // way waitForPlugin in scripts/e2e/server.ts does.
+    const listDeadline = Date.now() + 30_000;
+    let plugins: Array<{ id?: string; source?: { type?: string }; state?: { status?: string; error?: string } }> = [];
+    let mine: (typeof plugins)[number] | undefined;
+    while (Date.now() < listDeadline) {
+      const listed = await call("GET", "/api/plugin");
+      plugins = Array.isArray((listed.body as { data?: unknown } | undefined)?.data)
+        ? (listed.body as { data: typeof plugins }).data
+        : [];
+      mine = plugins.find((p) => (p.id ?? "").includes("cow-worktree") || JSON.stringify(p.source ?? {}).includes("cow-worktree"));
+      if (mine?.state?.status === "active") break;
+      await Bun.sleep(150);
+    }
     check("our plugin appears in plugin.list", mine !== undefined, JSON.stringify(plugins).slice(0, 400));
     check(
       "our plugin is active, not failed",
@@ -149,8 +164,18 @@ async function main(): Promise<number> {
 
     // The `cow` Strategy, if registered, becomes the location's default, so a
     // create with NO strategy field must produce a Deep clone (ignored files
-    // present, a standalone .git) rather than a git worktree.
-    const created = await call("POST", "/api/worktree", { name: "dogfood" });
+    // present, a standalone .git) rather than a git worktree. The nightly
+    // demands a projectID on every worktree endpoint (projectIdOf in
+    // scripts/e2e/lib.ts); scratch roots resolve it to a single row.
+    const projects = await call("GET", "/api/project");
+    const projectRows = Array.isArray(projects.body)
+      ? projects.body
+      : (projects.body as { data?: Array<{ id?: string }> } | undefined)?.data ?? [];
+    const projectID = projectRows[0]?.id;
+    check("project id discovered", typeof projectID === "string", projects.text.slice(0, 300));
+    if (typeof projectID !== "string") return failures;
+
+    const created = await call("POST", "/api/worktree", { name: "dogfood", projectID });
     check(
       "worktree create with the plugin's default strategy succeeded",
       created.status === 200,
@@ -169,14 +194,14 @@ async function main(): Promise<number> {
         .catch(() => false);
       check("the created worktree has a standalone .git (not a Shallow worktree)", standaloneGit, `${directory}/.git`);
 
-      const list = await call("GET", "/api/worktree");
+      const list = await call("GET", "/api/worktree?projectID=" + encodeURIComponent(projectID));
       check(
         "worktree.list reports the created directory with strategy cow",
         JSON.stringify(list.body ?? {}).includes("cow"),
         `${list.status} ${list.text.slice(0, 400)}`,
       );
 
-      const removed = await call("DELETE", "/api/worktree", { directory, force: true });
+      const removed = await call("DELETE", "/api/worktree", { directory, force: true, projectID });
       check("worktree removal succeeded", removed.status === 204 || removed.status === 200, `${removed.status} ${removed.text.slice(0, 200)}`);
     }
 
@@ -186,7 +211,7 @@ async function main(): Promise<number> {
     // here we assert the registration log line instead of inventing an endpoint.
     check(
       "server logs show the plugin entrypoint loaded",
-      output.includes("loading plugin") && output.includes("opencode2-cow-worktree"),
+      output.includes("loading plugin") && output.includes("opencode-cow-worktree"),
       output.split("\n").filter((l) => l.includes("loading plugin")).join("\n").slice(0, 300),
     );
   } finally {

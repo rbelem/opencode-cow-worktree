@@ -21,7 +21,7 @@ import { strategyBadge } from "./strategy-badge";
  * and it is the correct call for a decoration that must never break the footer.
  */
 export default Plugin.define({
-  id: "opencode2-cow-worktree-tui",
+  id: "opencode-cow-worktree-tui",
   async setup(context) {
     const isCow = await resolveIsCow(context).catch(() => false);
     context.ui.slot({

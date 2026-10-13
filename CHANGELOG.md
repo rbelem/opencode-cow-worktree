@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased
+
+The plugin is renamed: `opencode2-cow-worktree` is now `opencode-cow-worktree`.
+
+- **The package name, plugin id, and TUI id carry the new name.** Install with
+  `opencode2 plugin add opencode-cow-worktree`, or
+  `"package": "opencode-cow-worktree@latest"` in `opencode.json`. The GitHub
+  repository moved to `rbelem/opencode-cow-worktree`; GitHub redirects old
+  links.
+- **CoW capability probes write scratch directories prefixed
+  `.opencode-cow-capability-`** (was `.opencode2-cow-capability-`). Leftover
+  scratch from older versions is inert: cleanup is in-process and nothing
+  scans for the old prefix.
+- The dogfood install check now matches the 20260917 nightly's API: readiness
+  polls `GET /api/plugin` (`/api/health` lost its handler on the 20260915
+  nightly), activation is detected by polling the plugin list, and worktree
+  endpoints carry `projectID`.
+
 ## 0.4.1
 
 Fixes a false refusal class in `remove_worktree`: a lane whose work already

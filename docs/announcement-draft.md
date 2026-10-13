@@ -8,7 +8,7 @@ the bottom.
 
 **1/4**
 
-I published opencode2-cow-worktree: a copy-on-write worktree strategy for
+I published opencode-cow-worktree: a copy-on-write worktree strategy for
 opencode2. Every parallel agent gets a complete clone of the project —
 node_modules, ignored files, .env included — in milliseconds, and the clones
 share extents, so it costs almost no extra disk.
@@ -24,11 +24,11 @@ it attaches instead of cloning.
 
 Install is two lines. In opencode.json:
 
-    { "plugins": [{ "package": "opencode2-cow-worktree@latest" }] }
+    { "plugins": [{ "package": "opencode-cow-worktree@latest" }] }
 
 or:
 
-    opencode2 plugin add opencode2-cow-worktree
+    opencode2 plugin add opencode-cow-worktree
 
 Needs Linux btrfs/XFS (reflink) or macOS APFS, worktrees on the project's own
 filesystem.
@@ -42,18 +42,18 @@ APFS clone extents measured on macOS CI (arm64 and x64).
 Known limits, in the README: opencode Desktop cannot select plugin
 strategies yet, and a non-CoW filesystem fails loudly instead of pretending.
 
-Repo: https://github.com/rbelem/opencode2-cow-worktree
-npm: https://www.npmjs.com/package/opencode2-cow-worktree
+Repo: https://github.com/rbelem/opencode-cow-worktree
+npm: https://www.npmjs.com/package/opencode-cow-worktree
 
 ## X / Twitter — single post (tight cut)
 
-opencode2-cow-worktree: every parallel agent gets a full project clone —
+opencode-cow-worktree: every parallel agent gets a full project clone —
 node_modules, ignored files, .env — in milliseconds via reflink, at
 near-zero disk. Default worktree strategy for opencode2; install is one JSON
 line or `opencode2 plugin add`. Gate: 100% lines across 20 files, plus a
 31-scenario live-agent swarm. btrfs/XFS/APFS.
 
-https://github.com/rbelem/opencode2-cow-worktree
+https://github.com/rbelem/opencode-cow-worktree
 
 ## Where each claim comes from
 

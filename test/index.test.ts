@@ -7,7 +7,7 @@ import { expect, test } from "bun:test";
 const mod = await import("../src/index");
 
 test("the default export is the plugin with its id and setup", () => {
-  expect(mod.default.id).toBe("opencode2-cow-worktree");
+  expect(mod.default.id).toBe("opencode-cow-worktree");
   expect(typeof mod.default.setup).toBe("function");
 });
 

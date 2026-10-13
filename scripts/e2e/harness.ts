@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 // SPDX-License-Identifier: MIT
 /**
- * e2e dogfood harness for opencode2-cow-worktree (issue #8).
+ * e2e dogfood harness for opencode-cow-worktree (issue #8).
  *
  * Starts a real `opencode2 serve` against a throwaway config root, installs the
  * plugin by directory, activates it, then fans out worktrees through the real

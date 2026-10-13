@@ -12,7 +12,7 @@ workflow do that ours doesn't?
 ## Summary
 
 workmux ties **git worktrees + a multiplexer (tmux/zellij/kitty/wezterm) + AI
-coding agents** into one CLI. Comparing it to `opencode2-cow-worktree`
+coding agents** into one CLI. Comparing it to `opencode-cow-worktree`
 highlights a clear gap: our plugin owns *provisioning* (cow clone, dirty-guard
 refusal, `spawn_workspace`) but has **no registry, no teardown lifecycle, no
 hooks, and no listing**. workmux solves all four with patterns that transfer
@@ -180,7 +180,7 @@ Uncommitted/untracked probes gate all destructive paths. PR-aware
 
 ---
 
-## Transferable patterns for opencode2-cow-worktree
+## Transferable patterns for opencode-cow-worktree
 
 Our plugin = strategy + `spawn_workspace`; it owns creation, dirty-guard, and
 session spawn, with **no registry, no teardown lifecycle, no hooks, no

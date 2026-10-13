@@ -184,20 +184,20 @@ the rest of the stream, not the URL.
 
 Found while installing the plugin into a real opencode2 config. Every
 `.ts`/`.js` under `plugins/` is auto-discovered, and so is a directory there
-whose entrypoint resolves. A `plugins/opencode2-cow-worktree/index.ts` is
+whose entrypoint resolves. A `plugins/opencode-cow-worktree/index.ts` is
 therefore loaded **without any `plugins` array entry**.
 
-Declaring that same path as `{ package: "~/.config/opencode/plugins/opencode2-cow-worktree" }`
+Declaring that same path as `{ package: "~/.config/opencode/plugins/opencode-cow-worktree" }`
 loaded the tree twice: the discovered copy reported
 
 ```
-opencode2-cow-worktree [local] active
+opencode-cow-worktree [local] active
 ```
 
 and the package-sourced copy reported
 
 ```
-{"source":{"type":"package","target":"~/.config/opencode/plugins/opencode2-cow-worktree"},
+{"source":{"type":"package","target":"~/.config/opencode/plugins/opencode-cow-worktree"},
  "state":{"status":"failed","error":"Plugin failed to load","ref":"err_bda47926"}}
 ```
 
